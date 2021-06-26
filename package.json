@@ -1,0 +1,22 @@
+{
+  "name": "gulp-weapp-replace-image",
+  "version": "1.0.0",
+  "description": "一款可自自动替换微信小程序项目中图片的 gulp 插件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pioneer-Linzi/gulp-weapp-replace-image.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pioneer-Linzi/gulp-weapp-replace-image/issues"
+  },
+  "homepage": "https://github.com/Pioneer-Linzi/gulp-weapp-replace-image#readme",
+  "dependencies": {
+    "through2": "^4.0.2"
+  }
+}
