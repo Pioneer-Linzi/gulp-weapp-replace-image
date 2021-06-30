@@ -24,14 +24,14 @@ const getUrl = function (uploader) {
     return url;
   };
 };
+const replaceUrl = [];
+const noReplaceUrl = [];
 /**
  * 过滤所有的文件，使用正则过滤文件，并把本地文件上传到cdn上，以减少包体积大小
  * @returns
  */
 module.exports = function ({ uploader, imageRegx = DEFAULTIMAGEREGX }) {
-  const replaceUrl = [];
-  const noReplaceUrl = [];
-  let i = 0;
+ 
   const getCDNUrl = getUrl(uploader);
   // 创建一个让每个文件通过的 stream 通道
     var stream = through2.obj(async function (file, enc, cb) {
@@ -65,6 +65,7 @@ module.exports = function ({ uploader, imageRegx = DEFAULTIMAGEREGX }) {
       cb();
     });
 
+  console.table(replaceUrl)
 
   return stream;
 };
