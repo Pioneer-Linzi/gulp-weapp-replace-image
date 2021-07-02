@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Pioneer-Linzi/gulp-weapp-replace-image#readme",
   "dependencies": {
     "del": "^6.0.0",
+    "images": "^3.2.3",
     "through2": "^4.0.2"
   }
 }
