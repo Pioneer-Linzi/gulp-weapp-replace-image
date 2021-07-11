@@ -1,58 +1,180 @@
 <html>
-	<header>
-		<title>
-			资源分析
-		</title>
-		<style>
-			body,html{
-				padding: 0;
-				margin: 0;
-				display: flex;
-				justify-content: center;
-			}
-			.main{
-				width: 1000px;
-				height: 100%;
-				border-radius: 5px;
-				box-shadow: 1px 1px 10px #eee;
-				display: flex;
-				justify-content: center;
-				flex-direction: column;
-				align-items: center;
-				justify-content: flex-start;
-			}
-			.header {
-				width: 100%;
-				margin-top: 20px;
-				font-size: 24px;
-				text-align: center;
-				font-weight: 500;
-			}
-			.title{
-				width: 100%;
-				font-size: 18px;
-				font-weight: 500p;
-				padding: 0 12px;
-				box-sizing: border-box;
-			}
-			.table {
-				display: grid;
-				
-			}
+<header>
+	<title>
+		资源分析
+	</title>
+	<style>
+		body,
+		html {
+			padding: 0;
+			margin: 0;
+			display: flex;
+			justify-content: center;
+		}
 
-		</style>
-	</header>
-	<body>
-		<div class="main">
-			<div class='header'>小程序资源分析</div>
-			<div class='title'>已替换资源</div>
-			<div class='table'>
-				
-			</div>
+		.main {
+			width: 1000px;
+			height: 100%;
+			border-radius: 5px;
+			box-shadow: 1px 1px 10px #eee;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-start;
+			padding: 20px;
+		}
 
-		</div>
-	</body>
-	<script>
-		var arr = [1,2,3,4,5]
-	</script>
+		.header {
+			width: 100%;
+			font-size: 24px;
+			text-align: center;
+			font-weight: 500;
+		}
+
+		.title {
+			width: 100%;
+			font-size: 18px;
+			font-weight: 500p;
+			box-sizing: border-box;
+		}
+
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+			margin: 20px 0;
+		}
+
+		td,
+		th {
+			padding: 0;
+		}
+
+		.pure-table {
+			border-collapse: collapse;
+			border-spacing: 0;
+			empty-cells: show;
+			border: 1px solid #cbcbcb;
+		}
+
+		.pure-table caption {
+			color: #000;
+			font: italic 85%/1 arial, sans-serif;
+			padding: 1em 0;
+			text-align: center;
+		}
+
+		.pure-table td,
+		.pure-table th {
+			border-left: 1px solid #cbcbcb;
+			border-width: 0 0 0 1px;
+			font-size: inherit;
+			margin: 0;
+			overflow: visible;
+			padding: .5em 1em;
+		}
+
+		.pure-table thead {
+			background-color: #e0e0e0;
+			color: #000;
+			text-align: left;
+			vertical-align: bottom;
+		}
+
+		.pure-table td {
+			background-color: transparent;
+		}
+
+		.pure-table-bordered td {
+			border-bottom: 1px solid #cbcbcb;
+		}
+
+		.pure-table-bordered tbody>tr:last-child>td {
+			border-bottom-width: 0;
+		}
+	</style>
+</header>
+
+<body>
+	<div class="main">
+		<div class='header'>小程序资源分析</div>
+		<div class='title'>已替换资源</div>
+		<table class="pure-table pure-table-bordered">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>源码路径</th>
+					<th>源码</th>
+					<th>资源路径</th>
+				</tr>
+			</thead>
+			<tbody id='replacelist'>
+
+			</tbody>
+		</table>
+
+		<div class='title'>未替换资源</div>
+		<table class="pure-table pure-table-bordered">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>源码路径</th>
+					<th>源码</th>
+				</tr>
+			</thead>
+			<tbody id='noReplaceList'>
+
+			</tbody>
+		</table>
+		<!-- <div class='title'>已替换资源</div>
+		<table class="pure-table pure-table-bordered">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>源码路径</th>
+					<th>源码</th>
+					<th>资源路径</th>
+				</tr>
+			</thead>
+			<tbody id='replacelist'>
+
+			</tbody>
+		</table> -->
+
+	</div>
+</body>
+<script>
+	let replacelist = ${replacelist}
+
+
+	function addTableContent(selector, list) {
+		for (let i = 0; i < list.length - 1; i++) {
+			let tr = document.createElement('tr')
+			let tdNO = document.createElement('td')
+			tdNO.appendChild(document.createTextNode(i + 1))
+			tr.appendChild(tdNO)
+			for (item in list[i]) {
+				let tdText = document.createElement('td')
+				tdText.appendChild(document.createTextNode(list[i][item]))
+				tr.appendChild(tdText)
+			}
+			document.querySelector(selector).appendChild(tr)
+		}
+	}
+
+
+
+
+	let noReplaceList = ${noReplaceList}
+
+
+
+	addTableContent('#replacelist', replacelist)
+	addTableContent('#noReplaceList', noReplaceList)
+
+
+
+
+</script>
+
 </html>

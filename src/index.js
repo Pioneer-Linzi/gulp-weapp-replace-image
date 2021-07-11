@@ -1,13 +1,17 @@
 const through2 = require("through2");
 let fs = require("fs");
 const { getPath } = require("./utils");
-const {printToFirstLine} = require('./readline')
 const del = require("del");
 var images = require("images");
+const { readTemplate } = require("./template");
 const DEFAULTIMAGEREGX = /[\.\/\w\-\:\_]+\.(png|jpg|gif)/gi;
+const REPLACELIST = '${replacelist}'
+const NOREPLACELIST = '${noReplaceList}'
+
 
 const map = new Map()
 
+let tmp = readTemplate
 
 /**
  * 通过filePath 来获取 cdn 图片，包含去重逻辑
@@ -31,6 +35,8 @@ const getUrl= async function  (uploader,filePath) {
     return url;
   };
 
+  let replacelist = []
+  let noReplaceList = [] 
 
 /**
  * 过滤所有的文件，使用正则过滤文件，并把本地文件上传到cdn上，以减少包体积大小
@@ -51,24 +57,28 @@ module.exports = function ({ uploader, imageRegx = DEFAULTIMAGEREGX }) {
             file.contents = Buffer.from(
               file.contents.toString().replace(item, url)
             );
-             console.table([{
+            replacelist.push({
               file: file.path,
               content: item,
               cdn: url
-            }]);
+            })
+            tmp =tmp.replace(REPLACELIST,JSON.stringify(replacelist))
             del(filePath)
           }else{
-            // console.table([{
-            //   file: file.path,
-            //   content: item,
-            // }]);
+            noReplaceList.push({
+              file: file.path,
+              content: item
+            })
+            tmp = tmp.replace(NOREPLACELIST,JSON.stringify(noReplaceList))
           }
         }
       }
+      await writeAnalyse(tmp)
       // 确保文件进去下一个插件
       this.push(file);
       // 告诉 stream 转换工作完成
       cb();
+
     });
   return stream;
 };
