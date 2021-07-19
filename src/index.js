@@ -2,8 +2,7 @@ const through2 = require("through2");
 let fs = require("fs");
 const { getPath } = require("./utils");
 const del = require("del");
-var images = require("images");
-const { readTemplate } = require("./template");
+const { readTemplate,writeAnalyse } = require("./template");
 const DEFAULTIMAGEREGX = /[\.\/\w\-\:\_]+\.(png|jpg|gif)/gi;
 const REPLACELIST = '${replacelist}'
 const NOREPLACELIST = '${noReplaceList}'
@@ -11,7 +10,7 @@ const NOREPLACELIST = '${noReplaceList}'
 
 const map = new Map()
 
-let tmp = readTemplate
+
 
 /**
  * 通过filePath 来获取 cdn 图片，包含去重逻辑
@@ -22,9 +21,9 @@ const getUrl= async function  (uploader,filePath) {
     if (!map.has(filePath)) {
       // printToFirstLine(`正在上传文件: ${filePath}`)
       // console.log(`正在上传文件: ${filePath}`)
-      images(filePath).save(filePath,{
-        quality:50
-      })
+      // images(filePath).save(filePath,{
+      //   quality:50
+      // })
       url = await uploader(filePath);
       url = url.replace("http://", "https://");
       map.set(filePath, url);
@@ -46,6 +45,7 @@ module.exports = function ({ uploader, imageRegx = DEFAULTIMAGEREGX }) {
   // 创建一个让每个文件通过的 stream 通道
     var stream = through2.obj(async function (file, enc, cb) {
       const arr = filterRes(file, imageRegx);
+      let tmp = readTemplate()
       if (arr) {
         for (let i = 0; i < arr.length; i++) {
           const item = arr[i];
@@ -54,6 +54,7 @@ module.exports = function ({ uploader, imageRegx = DEFAULTIMAGEREGX }) {
             // console.log(`校测到可替换文件:${filePath}`)
             // printToFirstLine(`校测到可替换文件:${filePath}`)
             let url = await getUrl(uploader,filePath);
+
             file.contents = Buffer.from(
               file.contents.toString().replace(item, url)
             );
@@ -62,17 +63,17 @@ module.exports = function ({ uploader, imageRegx = DEFAULTIMAGEREGX }) {
               content: item,
               cdn: url
             })
-            tmp =tmp.replace(REPLACELIST,JSON.stringify(replacelist))
             del(filePath)
           }else{
             noReplaceList.push({
               file: file.path,
               content: item
             })
-            tmp = tmp.replace(NOREPLACELIST,JSON.stringify(noReplaceList))
           }
         }
       }
+      tmp =tmp.replace(REPLACELIST,JSON.stringify(replacelist))
+      tmp = tmp.replace(NOREPLACELIST,JSON.stringify(noReplaceList))
       await writeAnalyse(tmp)
       // 确保文件进去下一个插件
       this.push(file);

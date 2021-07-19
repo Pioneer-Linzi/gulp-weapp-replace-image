@@ -1,19 +1,14 @@
 const fs = require('fs')
 const path = require('path')
 
-let file = path.resolve(__dirname, './analyse.html')
+let file = path.resolve("./", './analyse.html')
 
 /**
  * 返回模版
  * @returns html read template
  */
 function readTemplate(){
-	return new Promise((resolve,reject)=>{
-		fs.readFile('./assets/index.html',(err,data)=>{
-			if(err) reject(err);
-			resolve(data.toString())
-		})
-	})
+	return fs.readFileSync(__dirname + '/assets/index.html').toString()
 }
 
 
@@ -27,6 +22,7 @@ function readTemplate(){
  */
 async function writeAnalyse(tmp){
 	return new Promise((resolve,reject)=>{
+		console.log(tmp)
 		fs.writeFile(file,tmp,{ encoding: 'utf8' }, err => {
 			if(err) reject(err)
 			resolve()
@@ -39,10 +35,3 @@ module.exports = {
 	writeAnalyse,
 	readTemplate
 }
-
-
-replaceString('${replacelist}',JSON.stringify([{
-	asdfasd: 'asdfas',
-	asdfasd: "asdfa"
-}]))
-
