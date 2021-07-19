@@ -1,6 +1,6 @@
 {
   "name": "gulp-weapp-replace-image",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一款可自自动替换微信小程序项目中图片的 gulp 插件",
   "main": "src/index.js",
   "scripts": {
